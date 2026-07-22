@@ -1,22 +1,112 @@
 # GHST
 
-GHST is a human-governed control layer for enterprise AI use. It intercepts prompts before release, checks them against organisational policy, detects sensitive or high-risk content, routes ambiguous cases to authorised reviewers, and records every governed decision with audit evidence.
+**A human-governed AI control layer for enterprise prompt release.** GHST intercepts prompts before they reach external AI, checks them against organisational policy, detects sensitive or high-risk context, routes ambiguous requests to authorised reviewers, and records every governed decision with tamper-evident audit evidence.
 
-The core idea is simple: GHST can learn operationally, but it cannot grant itself authority.
+The part that compounds: **it can learn operationally, but not autonomously.** When reviewers approve a bounded safe pattern, GHST can reuse that decision as an ACE precedent for similar future prompts. When repeated approved cases match a clear pattern, GHST can propose a governed learning item for approval. The system becomes more efficient over time, while authority stays with humans.
 
-## Why It Matters
+Runs with a **Next.js dashboard**, a **Chrome extension**, and a **FastAPI backend** connected to PostgreSQL or Supabase PostgreSQL. Optional local inference can run through **Ollama** with configured Qwen targets, while deterministic controls and policy evidence remain the authority boundary.
+
+> GHST can learn what has already been approved. It cannot approve itself.
+
+---
+
+## The problem
+
+Enterprise teams are already using external AI tools for drafting, research, summarisation, and analysis. The risk is not just the model output. The real risk starts **before submission**:
+
+- staff paste sensitive business data into external AI
+- policy decisions become inconsistent between teams
+- reviewers repeatedly see the same borderline requests
+- organisations cannot prove what was checked, who approved it, and why
+
+Traditional controls often act too late, after data has already left the organisation.
+
+**GHST moves the control point to the prompt itself.** It evaluates the request before release, enforces policy, supports human review where needed, and preserves a verifiable governance trail.
+
+---
+
+## Who it's for
+
+GHST is designed for organisations that need governed AI use without pretending every decision can be automated.
+
+- **Compliance, legal, finance, HR, and governance teams** that need AI assistance but must protect sensitive information
+- **Security and policy owners** who need enforceable controls before data reaches external AI
+- **Review teams** that want consistent decisions and less repeated work on the same safe patterns
+- **Hackathon and demo audiences** evaluating practical AI governance, human oversight, bounded learning, and auditability
+
+---
+
+## What GHST does
 
 GHST demonstrates:
 
 - governed prompt release with `ALLOW`, `REDACT`, `REDIRECT`, `REVIEW`, and `BLOCK`
-- policy-grounded decisions instead of freeform AI judgment alone
-- human review for high-impact or ambiguous requests
+- policy-grounded decisions instead of freeform model judgment alone
+- human review for high-impact, low-confidence, or ambiguous requests
 - bounded ACE precedent reuse after approval
-- governed learning queues, shadowing, promotion, and rollback
-- signed one-time downstream clearance
+- governed learning queues, shadowing, promotion, and rollback controls
+- signed downstream clearance
 - tamper-evident audit history
 
-## What’s In The Repo
+---
+
+## Architecture
+
+GHST has three product surfaces and one governance backend:
+
+| Surface | Role |
+|-------|------|
+| **Chrome extension** | intercepts prompts, shows enforcement outcomes, and protects supported AI destinations |
+| **Dashboard** | exposes control plane, policy memory, human review, governed learning, precedents, and audit |
+| **Backend API** | evaluates prompts, stores decisions, enforces policy, and manages review and learning workflows |
+| **Database** | stores identities, policies, evaluations, reviews, precedents, learning records, and audit history |
+
+### Decision flow
+
+| Step | What happens | Outcome |
+|------|--------------|---------|
+| **1 · Intercept** | GHST captures the prompt before release | raw request stays inside the governed path |
+| **2 · Evaluate** | backend checks policy, findings, destination, and risk signals | governed action is determined |
+| **3 · Enforce** | safe requests proceed, risky requests are redacted, redirected, reviewed, or blocked | no uncontrolled release |
+| **4 · Review** | authorised reviewers inspect protected evidence and decide | human authority remains final |
+| **5 · Learn** | approved outcomes can become ACE precedents or governed proposals | similar future prompts can reuse memory |
+| **6 · Audit** | every governed decision is written into the chain-linked audit record | evidence remains verifiable |
+
+---
+
+## Key features
+
+- **Pre-submission governance** through the Chrome extension before prompts reach external AI
+- **Policy memory** with clause extraction, versioning, activation, simulation, and verification workflow
+- **Human review** with protected payloads, reviewer decisions, and second-review controls for high-impact precedents
+- **ACE precedent reuse** so approved patterns can be applied again within explicit scope and expiry
+- **Governed learning** with proposal queue, candidate comparison, shadowing, promotion, and rollback controls
+- **Audit chain** with hash-linked event receipts and verification
+- **Role-based seeded identities** for demo-ready access across employee, reviewer, policy, audit, and system roles
+- **PDF support** through `pypdf`, with optional OCR tooling for document workflows
+- **Static web frontend** suitable for Vercel hosting, with backend hosted separately
+
+---
+
+## Tech stack
+
+Only technologies actually used in this repo or runtime path are listed here.
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 16, React 19, TypeScript, `lucide-react` |
+| Extension | Chrome Manifest V3, JavaScript, HTML, CSS |
+| Backend | Python 3.12, FastAPI, SQLAlchemy, Alembic, `psycopg` |
+| Config and API support | `pydantic-settings`, `httpx`, `python-multipart`, `PyYAML`, `structlog` |
+| Database | PostgreSQL, Supabase PostgreSQL support, SQLite fallback |
+| Local model path | Ollama with configured Qwen3.5 model targets |
+| Document handling | `pypdf`, Tesseract OCR, `pdftoppm` |
+| Security libraries | PyJWT, `argon2-cffi`, `cryptography` |
+| Testing | `pytest`, `pytest-cov`, Node test runner |
+
+---
+
+## Repository structure
 
 ```text
 backend/      FastAPI governance engine, models, migrations, tests
@@ -26,17 +116,7 @@ docs/         architecture and demo references
 scripts/      validation and helper scripts
 ```
 
-## Stack
-
-- Frontend: Next.js 16, React 19, TypeScript, `lucide-react`
-- Extension: Chrome Manifest V3, JavaScript, HTML, CSS
-- Backend: Python 3.12, FastAPI, SQLAlchemy, Alembic, `psycopg`
-- Configuration and APIs: `pydantic-settings`, `httpx`, `python-multipart`, `PyYAML`, `structlog`
-- Database: PostgreSQL, Supabase PostgreSQL support, SQLite fallback
-- Local model path: Ollama with configured Qwen3.5 model targets
-- Document handling: `pypdf`, Tesseract OCR, `pdftoppm`
-- Security: PyJWT, `argon2-cffi`, `cryptography`
-- Testing: `pytest`, `pytest-cov`, Node test runner
+---
 
 ## Setup
 
@@ -64,13 +144,13 @@ Open:
 - API docs: `http://localhost:8000/docs`
 - Health check: `http://localhost:8000/api/v1/health/ready`
 
-If you want local model inference as well:
+If you also want local model inference:
 
 ```bash
 docker compose --profile local-llm up --build
 ```
 
-### Option 2: Local Setup
+### Option 2: Local setup
 
 Create the environment file:
 
@@ -112,7 +192,7 @@ cd frontend
 npm run dev
 ```
 
-### Supabase Setup
+### Supabase setup
 
 GHST can use Supabase as the main PostgreSQL database.
 
@@ -137,7 +217,7 @@ SUPABASE_SERVICE_ROLE_KEY=...
 SUPABASE_STORAGE_BUCKET=ghst-policy-memory
 ```
 
-### Ollama Setup
+### Ollama setup
 
 Ollama is optional. GHST works in transparent demo mode without it.
 
@@ -167,9 +247,7 @@ LOCAL_MODEL=qwen3.5:9b
 LOCAL_MODEL_FALLBACK=qwen3.5:4b
 ```
 
-GHST still keeps deterministic controls and policy evidence as the authority boundary.
-
-### Extension Setup
+### Extension setup
 
 1. Start the backend and frontend
 2. Open `chrome://extensions`
@@ -181,9 +259,36 @@ GHST still keeps deterministic controls and policy evidence as the authority bou
 
 The extension supports the protected composer flow on the configured sandbox and supported ChatGPT origins.
 
-## Demo Flow
+### Vercel frontend demo
 
-Recommended demo:
+You can host the GHST dashboard frontend on Vercel.
+
+Use these settings:
+
+- Framework: `Next.js`
+- Root directory: `frontend`
+- Install command: `npm ci`
+- Build command: `npm run build`
+- Output directory: `out`
+
+Set this environment variable in Vercel:
+
+```env
+NEXT_PUBLIC_API_URL=https://YOUR-BACKEND-DOMAIN/api/v1
+```
+
+Important:
+
+- Vercel hosts only the frontend in this setup
+- the FastAPI backend must be hosted separately
+- backend `CORS_ORIGINS` must include your Vercel domain
+- the Chrome extension is deployed separately from Vercel
+
+---
+
+## Demo flow
+
+Recommended GHST demo:
 
 1. Sign in with a managed identity
 2. Submit a safe prompt and show `ALLOW`
@@ -196,16 +301,20 @@ Recommended demo:
 
 Detailed guide: [docs/DEMO_RUNBOOK.md](docs/DEMO_RUNBOOK.md)
 
-## Governed Learning
+---
+
+## Governed learning
 
 GHST does not retrain itself from live prompts in production.
 
 Instead, it supports two controlled learning paths:
 
-- Operational learning: approved review outcomes become bounded ACE precedents that can be reused only within explicit scope and policy constraints
-- Governed learning proposals: repeated similar approved cases can auto-propose a new precedent into the approval queue
+- **Operational learning**: approved review outcomes become bounded ACE precedents that can be reused only within explicit scope and policy constraints
+- **Governed learning proposals**: repeated similar approved cases can auto-propose a new precedent into the approval queue
 
 Every proposed precedent remains inactive until it is approved by authorised reviewers.
+
+---
 
 ## Verification
 
@@ -221,7 +330,9 @@ npm run build
 node --test extension/adapters.test.js
 ```
 
-## Current Boundary
+---
+
+## Current boundary
 
 Implemented:
 
@@ -238,7 +349,9 @@ Environment-dependent:
 - production Supabase credentials and hardening
 - real external downstream integration
 
-## More Detail
+---
+
+## More detail
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [docs/API.md](docs/API.md)

@@ -20,3 +20,29 @@ docker compose -f docker-compose.production.yml up --build
 No certificate, key or deployment secret is included in source control.
 
 The browser and frontend never receive a Supabase URL, anon key or service-role key. FastAPI remains the only data-access boundary. Migration `0003` enables PostgreSQL row-level security on GHST tables and revokes Supabase Data API access from `anon` and `authenticated`; application RBAC remains authoritative inside FastAPI.
+
+## Vercel frontend option
+
+If you want a fast public demo, host only the GHST frontend on Vercel and keep the FastAPI backend on a separate host.
+
+Recommended Vercel settings:
+
+- Framework preset: `Next.js`
+- Root directory: `frontend`
+- Install command: `npm ci`
+- Build command: `npm run build`
+- Output directory: `out`
+
+Required Vercel environment variable:
+
+```env
+NEXT_PUBLIC_API_URL=https://YOUR-BACKEND-DOMAIN/api/v1
+```
+
+Required backend environment update:
+
+```env
+CORS_ORIGINS=http://localhost:3000,https://YOUR-PROJECT.vercel.app
+```
+
+If you use a custom Vercel domain, add that exact domain to `CORS_ORIGINS` as well.
