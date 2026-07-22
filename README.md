@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="frontend/public/ghst-logo.png" alt="GHST logo" width="180" />
+  <img src="frontend/public/ghst-logo2.png" alt="GHST logo" width="180" />
 </p>
 
 <h1 align="center">GHST</h1>
