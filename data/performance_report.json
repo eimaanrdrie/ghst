@@ -1,0 +1,14 @@
+{
+  "environment": "Codex reference container; SQLite demo mode",
+  "iterations": 25,
+  "deterministic_evaluation_median_ms": 44.22,
+  "deterministic_evaluation_p95_ms": 81.09,
+  "gateway_fast_path_median_ms": 45.65,
+  "gateway_fast_path_p95_ms": 74.77,
+  "targets": {
+    "deterministic_ms": 500,
+    "automated_p95_ms": 10000,
+    "gateway_ms": 300
+  },
+  "passed": true
+}

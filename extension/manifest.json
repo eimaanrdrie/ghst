@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "GHST Protected Prompt Composer",
+  "version": "1.2.0",
+  "description": "Pre-submission enterprise AI governance with human-bounded ACE learning.",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["http://localhost:8000/*", "http://localhost:3000/*", "https://chatgpt.com/*", "https://chat.openai.com/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": { "default_title": "Open GHST protection" },
+  "content_scripts": [
+    {
+      "matches": ["http://localhost:3000/ai-sandbox*", "https://chatgpt.com/*", "https://chat.openai.com/*"],
+      "js": ["adapters.js", "icons.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["ghst-logo.png"],
+      "matches": ["http://localhost:3000/*", "https://chatgpt.com/*", "https://chat.openai.com/*"]
+    }
+  ]
+}

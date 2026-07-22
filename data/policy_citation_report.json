@@ -1,0 +1,8 @@
+{
+  "dataset": "ghst-labelled-policy-scenarios-v1",
+  "scenarios": 20,
+  "correct_top_citations": 20,
+  "citation_accuracy": 1.0,
+  "threshold": 0.9,
+  "passed": true
+}

@@ -1,0 +1,9 @@
+{
+  "trained": false,
+  "backend": "VALIDATION_ONLY",
+  "deidentified": true,
+  "balanced": true,
+  "examples": 10,
+  "dataset_digest": "ee566c19afb9aa84c6ad9d20842b2bf0ea03e76b87f5cc1674b9f719c8fa0ebb",
+  "base_model": "Qwen/Qwen3-4B"
+}

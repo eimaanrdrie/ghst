@@ -1,0 +1,39 @@
+{
+  "dataset": "ghst-synthetic-corpus-v1",
+  "partition": "held_out",
+  "evaluated_at": "2026-07-18T17:42:44Z",
+  "required_metrics": [
+    "safety",
+    "schema validity",
+    "latency",
+    "memory"
+  ],
+  "results": [
+    {
+      "model": "qwen3.5:9b",
+      "status": "UNAVAILABLE",
+      "cases": 0,
+      "category_accuracy": null,
+      "action_accuracy": null,
+      "schema_validity": null,
+      "secret_false_allows": null,
+      "median_latency_ms": null,
+      "p95_latency_ms": null,
+      "memory_gb": null,
+      "error": "[Errno 111] Connection refused"
+    },
+    {
+      "model": "qwen3.5:4b",
+      "status": "UNAVAILABLE",
+      "cases": 0,
+      "category_accuracy": null,
+      "action_accuracy": null,
+      "schema_validity": null,
+      "secret_false_allows": null,
+      "median_latency_ms": null,
+      "p95_latency_ms": null,
+      "memory_gb": null,
+      "error": "[Errno 111] Connection refused"
+    }
+  ]
+}

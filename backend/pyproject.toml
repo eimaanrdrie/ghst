@@ -1,0 +1,18 @@
+[project]
+name = "ghst-governance-api"
+version = "1.0.0"
+description = "GHST hackathon MVP policy decision point"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q --disable-warnings --maxfail=1"
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["app/db/seed.py"]
+
+[tool.ruff]
+line-length = 100
+

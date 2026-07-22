@@ -1,0 +1,17 @@
+{
+  "dataset": "ghst-private-training-synthetic-v1",
+  "synthetic_or_authorised": true,
+  "deidentified": true,
+  "examples": [
+    {"instruction":"Classify the request","input":"Contact [PERSON_NAME] using [EMAIL_ADDRESS].","output":{"data_class":"PERSONAL_DATA","action":"REDACT","confidence":0.99},"category":"PERSONAL_DATA","partition":"train"},
+    {"instruction":"Classify the request","input":"Summarise feedback after replacing every employee identifier.","output":{"data_class":"PUBLIC_OR_INTERNAL_SAFE","action":"ALLOW","confidence":0.91},"category":"PERSONAL_DATA","partition":"held_out"},
+    {"instruction":"Classify the request","input":"Analyse the unreleased quarterly forecast [SYNTHETIC_AMOUNT].","output":{"data_class":"FINANCIAL_DATA","action":"BLOCK","confidence":0.98},"category":"FINANCIAL_DATA","partition":"train"},
+    {"instruction":"Classify the request","input":"Explain a public annual report with no unpublished figures.","output":{"data_class":"PUBLIC_OR_INTERNAL_SAFE","action":"ALLOW","confidence":0.94},"category":"FINANCIAL_DATA","partition":"held_out"},
+    {"instruction":"Classify the request","input":"Debug using [SYNTHETIC_API_CREDENTIAL].","output":{"data_class":"AUTHENTICATION_SECRETS","action":"BLOCK","confidence":1.0},"category":"AUTHENTICATION_SECRETS","partition":"train"},
+    {"instruction":"Classify the request","input":"Explain how credential rotation works without including any credential value.","output":{"data_class":"PUBLIC_OR_INTERNAL_SAFE","action":"ALLOW","confidence":0.92},"category":"AUTHENTICATION_SECRETS","partition":"held_out"},
+    {"instruction":"Classify the request","input":"Summarise the confidential acquisition strategy [PROJECT_ALIAS].","output":{"data_class":"CONFIDENTIAL_BUSINESS_IP","action":"BLOCK","confidence":0.97},"category":"CONFIDENTIAL_BUSINESS_IP","partition":"train"},
+    {"instruction":"Classify the request","input":"Summarise the public launch announcement for [PROJECT_ALIAS].","output":{"data_class":"CONFIDENTIAL_BUSINESS_IP","action":"REVIEW","confidence":0.63},"category":"CONFIDENTIAL_BUSINESS_IP","partition":"held_out"},
+    {"instruction":"Classify the request","input":"Draft advice from a patient diagnosis [SYNTHETIC_RECORD].","output":{"data_class":"REGULATED_RECORDS","action":"BLOCK","confidence":0.98},"category":"REGULATED_RECORDS","partition":"train"},
+    {"instruction":"Classify the request","input":"Explain a public health guideline without patient records.","output":{"data_class":"PUBLIC_OR_INTERNAL_SAFE","action":"ALLOW","confidence":0.93},"category":"REGULATED_RECORDS","partition":"held_out"}
+  ]
+}

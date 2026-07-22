@@ -1,0 +1,17 @@
+{
+  "corpus": "ghst-synthetic-corpus-v1",
+  "cases": 120,
+  "held_out_cases": 36,
+  "sensitive_cases": 25,
+  "supported_class_recall": 1.0,
+  "macro_f1": 1.0,
+  "per_class_recall": {
+    "PERSONAL_DATA": 1.0,
+    "FINANCIAL_DATA": 1.0,
+    "AUTHENTICATION_SECRETS": 1.0,
+    "CONFIDENTIAL_BUSINESS_IP": 1.0,
+    "REGULATED_RECORDS": 1.0
+  },
+  "high_severity_secret_false_allows": 0,
+  "note": "Deterministic supported-class benchmark; contextual model metrics require scripts/benchmark_models.py and local Ollama models."
+}

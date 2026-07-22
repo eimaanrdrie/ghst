@@ -1,0 +1,2 @@
+"""GHST acceptance tests."""
+

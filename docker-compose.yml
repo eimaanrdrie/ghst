@@ -1,0 +1,74 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_DB: ghst
+      POSTGRES_USER: ghst
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ghst-local-only}
+    volumes:
+      - ghst_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ghst -d ghst"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    networks: [governance_internal]
+
+  api:
+    build: ./backend
+    environment:
+      ENVIRONMENT: development
+      DEMO_MODE: ${DEMO_MODE:-true}
+      DATABASE_URL: postgresql+psycopg://ghst:${POSTGRES_PASSWORD:-ghst-local-only}@postgres:5432/ghst
+      JWT_SECRET: ${JWT_SECRET:-replace-this-development-jwt-secret-now}
+      PROMPT_HMAC_KEY: ${PROMPT_HMAC_KEY:-replace-this-development-hmac-secret-now}
+      REVIEW_ENCRYPTION_KEY: ${REVIEW_ENCRYPTION_KEY:-}
+      GRANT_ED25519_PRIVATE_KEY: ${GRANT_ED25519_PRIVATE_KEY:-}
+      GRANT_ED25519_PUBLIC_KEY: ${GRANT_ED25519_PUBLIC_KEY:-}
+      OLLAMA_URL: http://ollama:11434
+      LOCAL_MODEL: ${LOCAL_MODEL:-qwen3.5:9b}
+      LOCAL_MODEL_FALLBACK: ${LOCAL_MODEL_FALLBACK:-qwen3.5:4b}
+      CORS_ORIGINS: http://localhost:3000
+      APPROVED_DESTINATION_ORIGIN: http://localhost:3000/ai-sandbox
+      DOWNSTREAM_MODE: ${DOWNSTREAM_MODE:-mock}
+      DOWNSTREAM_BASE_URL: ${DOWNSTREAM_BASE_URL:-}
+      DOWNSTREAM_API_KEY: ${DOWNSTREAM_API_KEY:-}
+    ports: ["8000:8000"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health/ready')"]
+      interval: 8s
+      timeout: 4s
+      retries: 15
+    networks: [edge, governance_internal]
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+    ports: ["3000:80"]
+    depends_on:
+      api:
+        condition: service_healthy
+    networks: [edge]
+
+  ollama:
+    image: ollama/ollama:0.13.5
+    profiles: ["local-llm"]
+    volumes:
+      - ghst_ollama:/root/.ollama
+    networks: [governance_internal]
+    # No host port: only the authenticated PDP can reach local inference.
+
+volumes:
+  ghst_postgres:
+  ghst_ollama:
+
+networks:
+  edge:
+  governance_internal:
+    internal: true
+

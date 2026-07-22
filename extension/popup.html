@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GHST Extension</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="popup-shell">
+      <section class="popup-card" aria-label="GHST extension home">
+        <header class="popup-header">
+          <div class="popup-brand">
+            <div class="popup-logo" aria-hidden="true">
+              <img src="ghst-logo.png" class="popup-ghost" alt="">
+            </div>
+            <strong>GHST</strong>
+          </div>
+          <div class="popup-header-actions">
+            <div class="popup-status" id="popup-status">
+            <span class="popup-status-dot" aria-hidden="true"></span>
+            <span id="popup-status-label">Protected</span>
+            </div>
+            <button type="button" class="popup-account" id="auth-action" hidden>Sign in</button>
+          </div>
+        </header>
+
+        <section class="popup-auth" id="auth-panel" hidden aria-labelledby="auth-title">
+          <div class="popup-auth-heading">
+            <span class="popup-auth-icon" aria-hidden="true"><span data-lucide="shield-check" data-size="24"></span></span>
+            <div>
+              <h1 id="auth-title">Sign in to GHST</h1>
+              <p>Choose a managed identity for this extension.</p>
+            </div>
+          </div>
+
+          <div class="popup-identity-grid" id="identity-list" role="radiogroup" aria-label="Seeded identities">
+            <button type="button" class="popup-identity selected" data-identity="all-function" role="radio" aria-checked="true">
+              <strong>All Function</strong><span>Elena Garcia</span>
+            </button>
+            <button type="button" class="popup-identity" data-identity="reviewer" role="radio" aria-checked="false">
+              <strong>Reviewer</strong><span>Human review</span>
+            </button>
+            <button type="button" class="popup-identity" data-identity="policy-admin" role="radio" aria-checked="false">
+              <strong>Policy Admin</strong><span>Policies &amp; ACE</span>
+            </button>
+          </div>
+
+          <div class="popup-claims" id="auth-claims" aria-live="polite"></div>
+
+          <form id="auth-form" class="popup-auth-form" novalidate>
+            <label for="auth-username">Email</label>
+            <input id="auth-username" name="username" type="email" autocomplete="username" spellcheck="false" required>
+            <label for="auth-password">Password</label>
+            <div class="popup-password-field">
+              <input id="auth-password" name="password" type="password" autocomplete="current-password" required>
+              <button type="button" id="auth-password-toggle" class="popup-icon-button" aria-label="Show password" title="Show password"><span data-lucide="eye" data-size="16"></span></button>
+            </div>
+            <div id="auth-error" class="popup-auth-error" role="alert" hidden></div>
+            <button type="submit" id="auth-submit" class="popup-auth-submit"><span data-lucide="log-in" data-size="16"></span><span>Sign in</span></button>
+          </form>
+        </section>
+
+        <nav class="popup-tabs" aria-label="Popup sections">
+          <button type="button" class="popup-tab active" id="tab-check" aria-selected="true">
+            <span data-lucide="search" data-size="22"></span>
+            <span>Check</span>
+          </button>
+          <button type="button" class="popup-tab" id="tab-history" aria-selected="false">
+            <span data-lucide="history" data-size="22"></span>
+            <span>History</span>
+            <span class="popup-tab-count" id="history-count">0</span>
+          </button>
+        </nav>
+
+        <section class="popup-panel active" id="panel-check" aria-live="polite">
+          <div class="popup-hero" id="safe-state">
+            <div class="popup-hero-icon" aria-hidden="true">
+              <span data-lucide="shield-check" data-size="58"></span>
+            </div>
+            <h1>Protection is active</h1>
+            <div class="popup-connection" aria-label="ChatGPT connection">
+              <span class="popup-connection-dot" aria-hidden="true"></span>
+              <span class="popup-connection-logo" data-lucide="sparkles" data-size="24"></span>
+              <strong>ChatGPT</strong>
+              <span class="popup-connection-state">Connected</span>
+            </div>
+          </div>
+
+          <div class="popup-risk" id="risk-state" hidden>
+            <div class="popup-risk-head">
+              <div class="popup-risk-icon" aria-hidden="true">
+                <span data-lucide="triangle-alert" data-size="38"></span>
+              </div>
+              <div class="popup-risk-copy">
+                <h2 id="risk-title">Review required</h2>
+                <p id="risk-message">GHST found risky content in the current prompt.</p>
+              </div>
+            </div>
+            <div class="popup-risk-actions">
+              <button type="button" class="popup-action redact" id="action-redact">Redact</button>
+              <button type="button" class="popup-action review" id="action-review">Review</button>
+              <button type="button" class="popup-action block" id="action-block">Block</button>
+            </div>
+          </div>
+
+          <div class="popup-flow" aria-label="Protection flow">
+            <div class="popup-flow-step">
+              <div class="popup-flow-ring"><span data-lucide="search" data-size="22"></span></div>
+              <span>Inspect</span>
+            </div>
+            <div class="popup-flow-line" aria-hidden="true"></div>
+            <div class="popup-flow-step">
+              <div class="popup-flow-ring"><span data-lucide="shield-check" data-size="22"></span></div>
+              <span>Enforce</span>
+            </div>
+            <div class="popup-flow-line" aria-hidden="true"></div>
+            <div class="popup-flow-step">
+              <div class="popup-flow-ring"><span data-lucide="send" data-size="22"></span></div>
+              <span>Release</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="popup-panel" id="panel-history" hidden>
+          <div class="popup-history-filters" id="history-filters" role="tablist" aria-label="History filters"></div>
+          <div class="popup-history-list" id="history-list"></div>
+        </section>
+
+        <footer class="popup-footer">
+          <span data-lucide="activity" data-size="20" aria-hidden="true"></span>
+          <span>Monitoring this ChatGPT tab</span>
+        </footer>
+      </section>
+    </main>
+    <script src="icons.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
