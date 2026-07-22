@@ -80,7 +80,7 @@ Authorised model candidate metadata
   -> preserved rollback target
 ```
 
-This repo implements the governance workflow around candidate models, evaluations, shadowing, promotion and rollback. It does not itself perform end-to-end private LoRA or QLoRA training inside the application runtime. Live reviews never mutate weights. Organisation-specific production selection is resolved from the database; absent a valid promoted model, the configured local model path is used and failures abstain safely.
+This repo implements the governance workflow around candidate models, evaluations, shadowing, promotion and rollback. Organisation-specific production selection is resolved from the database; absent a valid promoted model, the configured local model path is used and failures abstain safely.
 
 ## Persistence model
 
