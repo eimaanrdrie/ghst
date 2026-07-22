@@ -4,41 +4,13 @@
 
 # GHST
 
-**A human-governed AI control layer for enterprise prompt release.** GHST intercepts prompts before they reach external AI, checks them against organisational policy, detects sensitive or high-risk context, routes ambiguous requests to authorised reviewers, and records every governed decision with tamper-evident audit evidence.
+**GHST is a self-learning enterprise AI governance system that operates with bounded autonomy under human governance.** GHST intercepts prompts before they reach external AI, checks them against organisational policy, detects sensitive or high-risk context, routes ambiguous requests to authorised reviewers, and records every governed decision with tamper-evident audit evidence.
 
-The part that compounds: **it can learn operationally, but not autonomously.** When reviewers approve a bounded safe pattern, GHST can reuse that decision as an ACE precedent for similar future prompts. When repeated approved cases match a clear pattern, GHST can propose a governed learning item for approval. The system becomes more efficient over time, while authority stays with humans.
-
-Runs with a **Next.js dashboard**, a **Chrome extension**, and a **FastAPI backend** connected to PostgreSQL or Supabase PostgreSQL. Optional local inference can run through **Ollama** with configured Qwen targets, while deterministic controls and policy evidence remain the authority boundary.
 
 > GHST can learn what has already been approved. It cannot approve itself.
 
 ---
 
-## The problem
-
-Enterprise teams are already using external AI tools for drafting, research, summarisation, and analysis. The risk is not just the model output. The real risk starts **before submission**:
-
-- staff paste sensitive business data into external AI
-- policy decisions become inconsistent between teams
-- reviewers repeatedly see the same borderline requests
-- organisations cannot prove what was checked, who approved it, and why
-
-Traditional controls often act too late, after data has already left the organisation.
-
-**GHST moves the control point to the prompt itself.** It evaluates the request before release, enforces policy, supports human review where needed, and preserves a verifiable governance trail.
-
----
-
-## Who it's for
-
-GHST is designed for organisations that need governed AI use without pretending every decision can be automated.
-
-- **Compliance, legal, finance, HR, and governance teams** that need AI assistance but must protect sensitive information
-- **Security and policy owners** who need enforceable controls before data reaches external AI
-- **Review teams** that want consistent decisions and less repeated work on the same safe patterns
-- **Hackathon and demo audiences** evaluating practical AI governance, human oversight, bounded learning, and auditability
-
----
 
 ## What GHST does
 
@@ -359,5 +331,4 @@ Environment-dependent:
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [docs/API.md](docs/API.md)
-- [docs/DEMO_RUNBOOK.md](docs/DEMO_RUNBOOK.md)
 - [SECURITY.md](SECURITY.md)
