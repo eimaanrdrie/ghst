@@ -4,7 +4,7 @@
 
 <h1 align="center">GHST</h1>
 
-**GHST is a self-learning enterprise AI governance system that operates with bounded autonomy under human governance.** GHST intercepts prompts before they reach external AI, checks them against organisational policy, detects sensitive or high-risk context, routes ambiguous requests to authorised reviewers, and records every governed decision with tamper-evident audit evidence.
+GHST is a **self-learning enterprise AI governance system** that operates with **bounded autonomy under human governance.** GHST intercepts prompts before they reach external AI, checks them against organisational policy, detects sensitive or high-risk context, routes ambiguous requests to authorised reviewers, and records every governed decision with tamper-evident audit evidence.
 
 
 > GHST can learn what has already been approved. It cannot approve itself.
