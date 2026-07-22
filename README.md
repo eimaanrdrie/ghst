@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="frontend/public/ghst-logo.png" alt="GHST logo" width="180" />
+</p>
+
 # GHST
 
 **A human-governed AI control layer for enterprise prompt release.** GHST intercepts prompts before they reach external AI, checks them against organisational policy, detects sensitive or high-risk context, routes ambiguous requests to authorised reviewers, and records every governed decision with tamper-evident audit evidence.
