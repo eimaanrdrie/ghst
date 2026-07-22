@@ -75,7 +75,7 @@ Only technologies actually used in this repo or runtime path are listed here.
 | Backend | Python 3.12, FastAPI, SQLAlchemy, Alembic, `psycopg` |
 | Config and API support | `pydantic-settings`, `httpx`, `python-multipart`, `PyYAML`, `structlog` |
 | Database | PostgreSQL, Supabase PostgreSQL support, SQLite fallback |
-| Local model path | Ollama with configured Qwen3.5 model targets |
+| Local LLM | Ollama with configured Qwen3.5 model targets |
 | Document handling | `pypdf`, Tesseract OCR, `pdftoppm` |
 | Security libraries | PyJWT, `argon2-cffi`, `cryptography` |
 | Testing | `pytest`, `pytest-cov`, Node test runner |
