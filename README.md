@@ -235,47 +235,6 @@ LOCAL_MODEL_FALLBACK=qwen3.5:4b
 
 The extension supports the protected composer flow on the configured sandbox and supported ChatGPT origins.
 
-### Vercel frontend demo
-
-You can host the GHST dashboard frontend on Vercel.
-
-Use these settings:
-
-- Framework: `Next.js`
-- Root directory: `frontend`
-- Install command: `npm ci`
-- Build command: `npm run build`
-- Output directory: `out`
-
-Set this environment variable in Vercel:
-
-```env
-NEXT_PUBLIC_API_URL=https://YOUR-BACKEND-DOMAIN/api/v1
-```
-
-Important:
-
-- Vercel hosts only the frontend in this setup
-- the FastAPI backend must be hosted separately
-- backend `CORS_ORIGINS` must include your Vercel domain
-- the Chrome extension is deployed separately from Vercel
-
----
-
-## Demo flow
-
-Recommended GHST demo:
-
-1. Sign in with a managed identity
-2. Submit a safe prompt and show `ALLOW`
-3. Submit sensitive content and show `REDACT` or `BLOCK`
-4. Submit an ambiguous prompt and show `REVIEW`
-5. Approve it in Human Review
-6. Show ACE precedent reuse
-7. Show governed learning proposing a new queue item
-8. Show audit evidence
-
-Detailed guide: [docs/DEMO_RUNBOOK.md](docs/DEMO_RUNBOOK.md)
 
 ---
 
