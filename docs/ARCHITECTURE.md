@@ -36,7 +36,8 @@ A lower-priority signal cannot weaken a higher-priority control. The local model
 
 ## Trust boundaries
 
-- Organisation-controlled: extension, PDP, local model, Supabase PostgreSQL, policy memory, ACE and audit store.
+- Organisation-controlled: extension, PDP, Supabase PostgreSQL, policy memory, ACE and audit store.
+- Optional organisation-controlled path: local Ollama-backed model inference when enabled.
 - External: employee-facing AI destination.
 - Raw input can enter the internal PDP over authenticated transport but cannot cross the gateway until the final release predicate is true.
 - The model container has no public port or Internet route in either Docker profile.
@@ -69,8 +70,8 @@ High-impact precedent creation first enters `PENDING_SECOND_REVIEW`. It cannot m
 ## Governed model lifecycle
 
 ```text
-Authorised, de-identified dataset
-  -> private LoRA/QLoRA training report
+Authorised model candidate metadata
+  -> training or evaluation report registration
   -> CANDIDATE
   -> held-out + adversarial + regression gates
   -> EVALUATED
@@ -79,8 +80,8 @@ Authorised, de-identified dataset
   -> preserved rollback target
 ```
 
-Validation-only adapters cannot enter this lifecycle. Live reviews never mutate weights. Organisation-specific production selection is resolved from the database; absent a valid promoted model, the configured local model is used and failures abstain safely.
+This repo implements the governance workflow around candidate models, evaluations, shadowing, promotion and rollback. It does not itself perform end-to-end private LoRA or QLoRA training inside the application runtime. Live reviews never mutate weights. Organisation-specific production selection is resolved from the database; absent a valid promoted model, the configured local model path is used and failures abstain safely.
 
 ## Persistence model
 
-Standard records persist a prompt HMAC, findings, policy matches, decision metadata and audit evidence. Raw input exists only in process memory, except encrypted temporary review evidence with TTL. ACE stores HMAC-derived normalised semantic features rather than raw reviewed prompts. Rolling-session analysis persists only categorical counters and cumulative risk—not prompt fragments. Usability evidence contains task metrics and pseudonymous participant hashes, never prompt content.
+Standard records persist a prompt HMAC, findings, policy matches, decision metadata and audit evidence. Raw input exists only in process memory, except encrypted temporary review evidence with TTL for human review. ACE stores hashed semantic signatures and bounded precedent metadata rather than openly stored reviewed prompts. Rolling-session analysis persists only categorical counters and cumulative risk, not prompt fragments. Usability evidence contains task metrics and pseudonymous participant hashes, never prompt content.
